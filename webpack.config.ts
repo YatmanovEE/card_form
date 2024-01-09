@@ -1,0 +1,101 @@
+import Webpack, { Configuration, ModuleOptions } from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import path from 'path';
+import type { Configuration as DevServerConfiguration } from 'webpack-dev-server';
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+
+type EnvVariables = {
+  env?: 'development' | 'production';
+  port?: number;
+};
+
+function getPlugins({ env }: EnvVariables): Configuration['plugins'] {
+  const plugins: Configuration['plugins'] = [];
+  const isDev = env === 'development';
+
+  if (isDev) {
+    plugins.push(new ForkTsCheckerWebpackPlugin());
+    plugins.push(new ReactRefreshWebpackPlugin());
+  } else {
+    plugins.push(
+      new MiniCssExtractPlugin({
+        filename: 'css/[name].[contenthash:8].css',
+        chunkFilename: 'css/[name].[contenthash:8].css',
+      }),
+    );
+  }
+
+  plugins.push(
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, './public/index.html'),
+    }),
+  );
+
+  return plugins;
+}
+function getRules({ env }: EnvVariables): ModuleOptions['rules'] {
+  const isDev = env === 'development';
+
+  const rules: ModuleOptions['rules'] = [];
+
+  rules.push({
+    test: /\.s[ac]ss$/i,
+    use: [
+      isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+      {
+        loader: 'css-loader',
+        options: {
+          modules: {
+            localIdentName: isDev ? '[path][name]__[local]' : '[hash:base64:8]',
+          },
+        },
+      },
+      'sass-loader',
+    ],
+  });
+
+  rules.push({
+    test: /\.tsx?$/,
+    exclude: /node_modules/,
+    use: [
+      {
+        loader: 'ts-loader',
+      },
+    ],
+  });
+
+  return rules;
+}
+
+export default (options: EnvVariables) => {
+  const { env, port } = options;
+  const isDev = env !== 'production';
+
+  const config: Webpack.Configuration & DevServerConfiguration = {
+    entry: path.resolve(__dirname, './src/index.tsx'),
+    mode: env ?? 'development',
+    resolve: {
+      extensions: ['.tsx', '.ts', '.js'],
+    },
+    output: {
+      path: path.resolve(__dirname, './build'),
+      filename: 'bundle.[contenthash].js',
+      clean: true,
+    },
+    devServer: isDev
+      ? {
+          port: port ?? 5000,
+          open: true,
+        }
+      : undefined,
+    devtool: isDev ? 'inline-source-map' : false,
+    module: {
+      rules: getRules(options),
+    },
+    plugins: getPlugins(options),
+  };
+
+  return config;
+};
