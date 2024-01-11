@@ -5,6 +5,7 @@
         "jest": true
     },
     "extends": [
+        "react-app",
         "airbnb",
         "airbnb-typescript",
         "plugin:import/typescript",
@@ -21,13 +22,14 @@
     },
     "plugins": [
         "react",
-        "@typescript-eslint",
         "prettier"
     ],
     "rules": {
         "prettier/prettier": [
           "error",
           { "endOfLine": "auto" }
-        ]
-      }
+        ],
+        "react/jsx-props-no-spreading": 0,
+        "react/function-component-definition": 0
+    }
 }
