@@ -1,0 +1,22 @@
+.root {
+    color: #FFFFFF;
+    text-align: center;
+    font-family: Roboto;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    background: var(--button-background-enabled);
+    border: none;
+    border-radius: 0.25rem;
+    padding: 12px 0px;
+    &:disabled {
+        background: var(--button-background-disabled);
+    }
+    &:not(:disabled):hover {
+        background: var(--button-background-enabled-hover);
+    }
+    &:not(:disabled):active {
+        background: var(--button-background-enabled-active);
+    }
+}
