@@ -13,7 +13,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     | undefined;
 }
 
-const Input: React.FC<Props> = ({ error, fieldName, label, formatter, ...props }) => {
+const Input: React.FC<Props> = ({ error, fieldName, label, formatter, inputMode, ...props }) => {
   const id = useId();
   const hasError = error?.[fieldName];
   const [formatValue, setFormatValue] = React.useState<string | number | readonly string[]>(
@@ -21,6 +21,15 @@ const Input: React.FC<Props> = ({ error, fieldName, label, formatter, ...props }
   );
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const inputValue = e.target.value;
+    if (inputMode === 'numeric' && inputValue.toLowerCase() !== inputValue.toUpperCase()) {
+      setFormatValue((prev) => {
+        if (prev) {
+          return prev;
+        }
+        return '';
+      });
+      return;
+    }
     if (formatter) {
       let formattedValue = '';
       const { format, patternChar } = formatter;

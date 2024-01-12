@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from '../Hooks';
 import Input from './Input/Input';
+
 const Form: React.FC = () => {
   const { register, onSubmit } = useForm();
   return (
@@ -16,16 +17,32 @@ const Form: React.FC = () => {
           format: '#### #### #### ####',
           patternChar: '#',
         }}
+        inputMode='numeric'
+        pattern='[0-9]'
+        autoComplete='cc-number'
       />
       <Input
-        {...register('card')}
+        {...register('month')}
         label='Месяц/Год'
         formatter={{
           format: '##/##',
           patternChar: '#',
         }}
+        inputMode='numeric'
+        pattern='[0-9]'
+        autoComplete='cc-exp'
       />
-      <button type='submit'>SS</button>
+      <Input
+        {...register('month')}
+        label='Код'
+        type='password'
+        inputMode='numeric'
+        pattern='[0-9]'
+        autoComplete='cc-csc'
+        maxLength={3}
+      />
+      <Input {...register('month')} label='Владелец карты' autoComplete='cc-name' />
+      <button type='submit'>Отправить</button>
     </form>
   );
 };
