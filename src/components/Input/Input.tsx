@@ -22,19 +22,22 @@ const Input: React.FC<Props> = ({ error, fieldName, label, formatter, ...props }
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const inputValue = e.target.value;
     if (formatter) {
+      let formattedValue = '';
       const { format, patternChar } = formatter;
-      let newFormattedValue = '';
-      for (let count = 0; count < inputValue.length; count += 1) {
-        const char = format[count];
-        if (!char) break;
-        if (char === patternChar) {
-          newFormattedValue = newFormattedValue.concat(inputValue?.[count]);
-        } else {
-          newFormattedValue = newFormattedValue.concat(char);
+      for (let i = 0; i < format.length; i += 1) {
+        const charFormat = format[i];
+        const charInputValue = inputValue?.[i];
+        if (charInputValue !== undefined) {
+          if (charFormat === patternChar) {
+            formattedValue = formattedValue.concat(charInputValue);
+          } else if (charFormat !== charInputValue) {
+            formattedValue = formattedValue.concat(charFormat).concat(charInputValue);
+          } else {
+            formattedValue = formattedValue.concat(charFormat);
+          }
         }
       }
-
-      setFormatValue(newFormattedValue);
+      setFormatValue(formattedValue);
     } else {
       setFormatValue(inputValue);
     }
