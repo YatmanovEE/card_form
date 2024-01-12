@@ -20,6 +20,7 @@
   text-align: left;
   transition: 250ms border-color ease;
   border-bottom: 1px solid;
+  width: 100%;
 
   &.valid  {
     border-color: var(--input-border);

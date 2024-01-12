@@ -10,39 +10,57 @@ const Form: React.FC = () => {
         console.log(fieldState);
       })}
     >
-      <Input
-        {...register('card')}
-        label='Номер карты'
-        formatter={{
-          format: '#### #### #### ####',
-          patternChar: '#',
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          maxWidth: 352,
         }}
-        inputMode='numeric'
-        pattern='[0-9]'
-        autoComplete='cc-number'
-      />
-      <Input
-        {...register('month')}
-        label='Месяц/Год'
-        formatter={{
-          format: '##/##',
-          patternChar: '#',
-        }}
-        inputMode='numeric'
-        pattern='[0-9]'
-        autoComplete='cc-exp'
-      />
-      <Input
-        {...register('month')}
-        label='Код'
-        type='password'
-        inputMode='numeric'
-        pattern='[0-9]'
-        autoComplete='cc-csc'
-        maxLength={3}
-      />
-      <Input {...register('month')} label='Владелец карты' autoComplete='cc-name' />
-      <button type='submit'>Отправить</button>
+      >
+        <Input
+          {...register('card')}
+          label='Номер карты'
+          formatter={{
+            format: '#### #### #### ####',
+            patternChar: '#',
+          }}
+          inputMode='numeric'
+          pattern='[0-9]'
+          autoComplete='cc-number'
+          style={{ gridColumn: '1/4' }}
+        />
+        <Input
+          {...register('month')}
+          label='Месяц/Год'
+          formatter={{
+            format: '##/##',
+            patternChar: '#',
+          }}
+          inputMode='numeric'
+          pattern='[0-9]'
+          autoComplete='cc-exp'
+          style={{ gridColumn: '1/2' }}
+        />
+        <Input
+          {...register('month')}
+          label='Код'
+          type='password'
+          inputMode='numeric'
+          pattern='[0-9]'
+          autoComplete='cc-csc'
+          maxLength={3}
+          style={{ gridColumn: '3/4' }}
+        />
+        <Input
+          {...register('month')}
+          label='Владелец карты'
+          autoComplete='cc-name'
+          style={{ gridColumn: '1/4' }}
+        />
+        <button type='submit' style={{ gridColumn: '1/4' }}>
+          Отправить
+        </button>
+      </div>
     </form>
   );
 };

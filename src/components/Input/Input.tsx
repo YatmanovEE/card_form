@@ -13,7 +13,15 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     | undefined;
 }
 
-const Input: React.FC<Props> = ({ error, fieldName, label, formatter, inputMode, ...props }) => {
+const Input: React.FC<Props> = ({
+  error,
+  fieldName,
+  label,
+  formatter,
+  inputMode,
+  style,
+  ...props
+}) => {
   const id = useId();
   const hasError = error?.[fieldName];
   const [formatValue, setFormatValue] = React.useState<string | number | readonly string[]>(
@@ -53,7 +61,7 @@ const Input: React.FC<Props> = ({ error, fieldName, label, formatter, inputMode,
     props.onChange(e);
   };
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={style}>
       <input
         id={id}
         {...props}
