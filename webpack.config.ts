@@ -66,6 +66,28 @@ function getRules({ mode }: EnvVariables): ModuleOptions['rules'] {
     ],
   });
 
+  rules.push({
+    test: /\.svg$/i,
+    use: [
+      {
+        loader: '@svgr/webpack',
+        options: {
+          icon: true,
+          svgoConfig: {
+            plugins: [
+              {
+                name: 'convertColors',
+                params: {
+                  currentColor: true,
+                },
+              },
+            ],
+          },
+        },
+      },
+    ],
+  });
+
   return rules;
 }
 
@@ -78,6 +100,9 @@ export default (options: EnvVariables) => {
     mode: mode ?? 'development',
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],
+      alias: {
+        '@': path.resolve(__dirname, 'src'),
+      },
     },
     output: {
       path: path.resolve(__dirname, './build'),
