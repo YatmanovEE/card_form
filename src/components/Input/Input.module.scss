@@ -1,0 +1,75 @@
+.label {
+  color: var(--label-color);
+  position: absolute;
+  top: 0px;
+  left: 0;
+  pointer-events: none;
+  transform-origin: left center;
+  transition: font-size 250ms, transform 250ms; 
+}
+
+.input {
+  color: var(--input-color);
+  border: none;
+  outline: none;
+  padding: 0;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 21px;
+  letter-spacing: 0em;
+  text-align: left;
+  transition: 250ms border-color ease;
+  border-bottom: 1px solid;
+
+  &.valid  {
+    border-color: var(--input-border);
+  }
+  &.invalid  {
+    border-color: var(--input-border-invalid);
+  }
+
+    
+  &:not(:placeholder-shown) ~ label,
+  &:focus ~ label {
+    transform: translateY(-100%);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 14px;
+    letter-spacing: 0em;
+    text-align: left;
+  }
+
+  & ~ span {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    transition: 0.4s;
+  }
+
+  &:focus ~ span,  &:hover ~ span{
+    width: 100%;
+    left: 0;
+    border-bottom: 1px solid;
+  }
+
+  &.valid:hover ~ span  {
+    border-color: var(--input-border-hover);
+  }
+  &.invalid:hover ~ span  {
+    border-color: var(--input-border-hover-invalid);
+  }
+  
+  &.valid:focus ~ span  {
+    border-color: var(--input-border-focus);
+  }
+  &.invalid:focus ~ span  {
+    border-color: var(--input-border-hover-invalid);
+  }
+}
+
+.root {
+  position: relative;
+  display: inline-block;
+  margin: 2rem 0;
+}
