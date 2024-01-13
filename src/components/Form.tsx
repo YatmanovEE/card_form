@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from '../Hooks';
 import Input from './Input/Input';
 import Button from './Button/Button';
+import { required } from './validators/validators';
 
 const Form: React.FC = () => {
   const { register, onSubmit, submitDisabled } = useForm();
@@ -19,7 +20,7 @@ const Form: React.FC = () => {
         }}
       >
         <Input
-          {...register('card')}
+          {...register('pan', [required])}
           label='Номер карты'
           formatter={{
             format: '#### #### #### ####',
@@ -31,7 +32,7 @@ const Form: React.FC = () => {
           style={{ gridColumn: '1/4' }}
         />
         <Input
-          {...register('month')}
+          {...register('expire', [required])}
           label='Месяц/Год'
           formatter={{
             format: '##/##',
@@ -43,7 +44,7 @@ const Form: React.FC = () => {
           style={{ gridColumn: '1/2' }}
         />
         <Input
-          {...register('month')}
+          {...register('cvc', [required])}
           label='Код'
           type='password'
           inputMode='numeric'
@@ -53,7 +54,7 @@ const Form: React.FC = () => {
           style={{ gridColumn: '3/4' }}
         />
         <Input
-          {...register('month')}
+          {...register('cardholder', [required])}
           label='Владелец карты'
           autoComplete='cc-name'
           style={{ gridColumn: '1/4' }}
