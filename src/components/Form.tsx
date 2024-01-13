@@ -1,10 +1,8 @@
 import React from 'react';
 import { useForm } from '../Hooks';
 import Input from './Input/Input';
-import { intervalLength, required } from './validators/validators';
-
 const Form: React.FC = () => {
-  const { register, onSubmit, error } = useForm();
+  const { register, onSubmit } = useForm();
   return (
     <form
       onSubmit={onSubmit((fieldState) => {
@@ -12,16 +10,18 @@ const Form: React.FC = () => {
       })}
     >
       <Input
-        {...register('name', [required, intervalLength(13, 19)])}
-        hasError={error?.name}
-        label='Имя'
+        {...register('card')}
+        label='Номер карты'
+        formatter={{
+          format: '#### #### #### ####',
+          patternChar: '#',
+        }}
       />
       <Input
         {...register('card')}
-        hasError={error?.card}
-        label='Карточка'
+        label='Месяц/Год'
         formatter={{
-          format: '#### #### #### ####',
+          format: '##/##',
           patternChar: '#',
         }}
       />

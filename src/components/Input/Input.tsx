@@ -2,7 +2,7 @@ import React, { useId } from 'react';
 import classes from './Input.module.scss';
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
-  hasError: boolean;
+  error: Record<string, boolean>;
   fieldName: string;
   label: string;
   formatter?:
@@ -13,8 +13,9 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
     | undefined;
 }
 
-const Input: React.FC<Props> = ({ hasError, fieldName, label, formatter, ...props }) => {
+const Input: React.FC<Props> = ({ error, fieldName, label, formatter, ...props }) => {
   const id = useId();
+  const hasError = error?.[fieldName];
   const [formatValue, setFormatValue] = React.useState<string | number | readonly string[]>(
     props?.value ?? '',
   );

@@ -16,10 +16,10 @@ export type IValidator = (value: string) => boolean;
  *   register: (fieldName: string, validateArray?: Array<IValidator>) => {
  *     onChange: ChangeEventHandler<HTMLInputElement>,
  *     onBlur: ChangeEventHandler<HTMLInputElement>,
+ *     error: Record<string, boolean>
  *     fieldName: string
  *   },
  *   onSubmit: (handleSubmit: (state: Map<string, IFormFieldState>) => void) => React.FormEventHandler<HTMLFormElement>,
- *   error: Record<string, boolean>
  * }}
  */
 export function useForm(): {
@@ -30,11 +30,11 @@ export function useForm(): {
     onChange: ChangeEventHandler<HTMLInputElement>;
     onBlur: ChangeEventHandler<HTMLInputElement>;
     fieldName: string;
+    error: Record<string, boolean>;
   };
   onSubmit: (
     handleSubmit: (state: Map<string, IFormFieldState>) => void,
   ) => React.FormEventHandler<HTMLFormElement>;
-  error: Record<string, boolean>;
 } {
   // Ссылка для хранения состояния полей формы
   const fieldsState = React.useRef(new Map<string, IFormFieldState>());
@@ -52,56 +52,59 @@ export function useForm(): {
    *   fieldName: string
    * }}
    */
-  const register = React.useCallback((fieldName: string, validateArray: Array<IValidator> = []) => {
-    /**
-     * Выполняет валидацию значения с использованием предоставленных функций валидации.
-     * @param {string} value - Значение для валидации.
-     * @returns {boolean} - Указывает, является ли значение допустимым.
-     */
-    const validateHandler = (value: string) => {
-      let newError = false;
-      validateArray.some((validate) => {
-        const result = validate(value);
-        if (result) {
-          return true;
-        }
-        newError = true;
-        return false;
-      });
-      fieldsState.current.set(fieldName, {
-        state: value,
-        error: newError,
-      });
-      return newError;
-    };
+  const register = React.useCallback(
+    (fieldName: string, validateArray: Array<IValidator> = []) => {
+      /**
+       * Выполняет валидацию значения с использованием предоставленных функций валидации.
+       * @param {string} value - Значение для валидации.
+       * @returns {boolean} - Указывает, является ли значение допустимым.
+       */
+      const validateHandler = (value: string) => {
+        let newError = false;
+        validateArray.some((validate) => {
+          const result = validate(value);
+          if (result) {
+            return true;
+          }
+          newError = true;
+          return false;
+        });
+        fieldsState.current.set(fieldName, {
+          state: value,
+          error: newError,
+        });
+        return newError;
+      };
 
-    /**
-     * Обрабатывает событие onChange элемента ввода.
-     * @type {ChangeEventHandler<HTMLInputElement>}
-     */
-    const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-      setError((prev) => ({
-        ...prev,
-        [fieldName]: validateHandler(e.target.value),
-      }));
-    };
-
-    /**
-     * Обрабатывает событие onBlur элемента ввода.
-     * @type {ChangeEventHandler<HTMLInputElement>}
-     */
-    const onBlur: ChangeEventHandler<HTMLInputElement> = (e) => {
-      const fieldValue = fieldsState.current.get(fieldName);
-      if (fieldValue) {
+      /**
+       * Обрабатывает событие onChange элемента ввода.
+       * @type {ChangeEventHandler<HTMLInputElement>}
+       */
+      const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
         setError((prev) => ({
           ...prev,
-          [fieldName]: validateHandler(fieldValue.state),
+          [fieldName]: validateHandler(e.target.value),
         }));
-      }
-    };
+      };
 
-    return { onChange, onBlur, fieldName };
-  }, []);
+      /**
+       * Обрабатывает событие onBlur элемента ввода.
+       * @type {ChangeEventHandler<HTMLInputElement>}
+       */
+      const onBlur: ChangeEventHandler<HTMLInputElement> = (e) => {
+        const fieldValue = fieldsState.current.get(fieldName);
+        if (fieldValue) {
+          setError((prev) => ({
+            ...prev,
+            [fieldName]: validateHandler(fieldValue.state),
+          }));
+        }
+      };
+
+      return { onChange, onBlur, fieldName, error };
+    },
+    [error],
+  );
 
   /**
    * Возвращает обработчик события отправки формы, который предотвращает стандартное
@@ -119,5 +122,5 @@ export function useForm(): {
     [],
   );
 
-  return { register, onSubmit, error };
+  return { register, onSubmit };
 }
