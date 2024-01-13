@@ -7,13 +7,13 @@ import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 type EnvVariables = {
-  env?: 'development' | 'production';
+  mode?: 'development' | 'production';
   port?: number;
 };
 
-function getPlugins({ env }: EnvVariables): Configuration['plugins'] {
+function getPlugins({ mode }: EnvVariables): Configuration['plugins'] {
   const plugins: Configuration['plugins'] = [];
-  const isDev = env === 'development';
+  const isDev = mode === 'development';
 
   if (isDev) {
     plugins.push(new ForkTsCheckerWebpackPlugin());
@@ -35,8 +35,8 @@ function getPlugins({ env }: EnvVariables): Configuration['plugins'] {
 
   return plugins;
 }
-function getRules({ env }: EnvVariables): ModuleOptions['rules'] {
-  const isDev = env === 'development';
+function getRules({ mode }: EnvVariables): ModuleOptions['rules'] {
+  const isDev = mode === 'development';
 
   const rules: ModuleOptions['rules'] = [];
 
@@ -70,12 +70,12 @@ function getRules({ env }: EnvVariables): ModuleOptions['rules'] {
 }
 
 export default (options: EnvVariables) => {
-  const { env, port } = options;
-  const isDev = env !== 'production';
+  const { mode, port } = options;
+  const isDev = mode !== 'production';
 
   const config: Webpack.Configuration & DevServerConfiguration = {
     entry: path.resolve(__dirname, './src/index.tsx'),
-    mode: env ?? 'development',
+    mode: mode ?? 'development',
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],
     },
