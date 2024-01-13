@@ -39,7 +39,7 @@
     text-align: left;
   }
 
-  & ~ span {
+  & ~ .inputBorder {
     position: absolute;
     bottom: 0;
     left: 50%;
@@ -47,23 +47,23 @@
     transition: 0.4s;
   }
 
-  &:focus ~ span,  &:hover ~ span{
+  &:focus ~ .inputBorder,  &:hover ~ .inputBorder{
     width: 100%;
     left: 0;
     border-bottom: 1px solid;
   }
 
-  &.valid:hover ~ span  {
+  &.valid:hover ~ .inputBorder  {
     border-color: var(--input-border-hover);
   }
-  &.invalid:hover ~ span  {
+  &.invalid:hover ~ .inputBorder  {
     border-color: var(--input-border-hover-invalid);
   }
   
-  &.valid:focus ~ span  {
+  &.valid:focus ~ .inputBorder  {
     border-color: var(--input-border-focus);
   }
-  &.invalid:focus ~ span  {
+  &.invalid:focus ~ .inputBorder  {
     border-color: var(--input-border-hover-invalid);
   }
 }

@@ -16,7 +16,15 @@ const Form: React.FC = () => {
         hasError={error?.name}
         label='Имя'
       />
-      <Input {...register('card')} hasError={error?.card} label='Карточка' />
+      <Input
+        {...register('card')}
+        hasError={error?.card}
+        label='Карточка'
+        formatter={{
+          format: '#### #### #### ####',
+          patternChar: '#',
+        }}
+      />
       <button type='submit'>SS</button>
     </form>
   );
