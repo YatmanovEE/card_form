@@ -4,12 +4,25 @@ import Input from './Input/Input';
 import Button from './Button/Button';
 import { required } from './validators/validators';
 
-const Form: React.FC = () => {
+/**
+ * Представляет состояние поля формы.
+ */
+type IFormFieldState = {
+  state: string;
+  error: boolean;
+  validateHandler: (value: string) => boolean;
+};
+
+type IFormProps = {
+  onSubmit: (value: Map<string, IFormFieldState>) => void;
+};
+
+const Form: React.FC<IFormProps> = ({ onSubmit: submitHandler }) => {
   const { register, onSubmit, submitDisabled } = useForm();
   return (
     <form
       onSubmit={onSubmit((fieldState) => {
-        console.log(fieldState);
+        submitHandler(fieldState);
       })}
     >
       <div
@@ -27,7 +40,6 @@ const Form: React.FC = () => {
             patternChar: '#',
           }}
           inputMode='numeric'
-          pattern='[0-9]'
           autoComplete='cc-number'
           style={{ gridColumn: '1/4' }}
         />
@@ -39,7 +51,6 @@ const Form: React.FC = () => {
             patternChar: '#',
           }}
           inputMode='numeric'
-          pattern='[0-9]'
           autoComplete='cc-exp'
           style={{ gridColumn: '1/2' }}
         />
@@ -48,7 +59,6 @@ const Form: React.FC = () => {
           label='Код'
           type='password'
           inputMode='numeric'
-          pattern='[0-9]'
           autoComplete='cc-csc'
           maxLength={3}
           style={{ gridColumn: '3/4' }}

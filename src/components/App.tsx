@@ -1,10 +1,10 @@
 import React from 'react';
-import Form from './Form';
+import PayStepper from './PayStepper/PayStepper';
 
 export default function App() {
   return (
     <div>
-      <Form />
+      <PayStepper />
     </div>
   );
 }
