@@ -1,14 +1,17 @@
 import React, { FormEvent, ChangeEventHandler } from 'react';
 
 /**
- * Представляет состояние поля формы.
- */
-type IFormFieldState = { state: string; error: boolean };
-
-/**
  * Представляет функцию валидации для поля формы.
  */
 export type IValidator = (value: string) => boolean;
+/**
+ * Представляет состояние поля формы.
+ */
+type IFormFieldState = {
+  state: string;
+  error: boolean;
+  validateHandler: (value: string) => boolean;
+};
 
 /**
  * Пользовательский хук React для управления состоянием формы и валидацией.
@@ -20,6 +23,8 @@ export type IValidator = (value: string) => boolean;
  *     fieldName: string
  *   },
  *   onSubmit: (handleSubmit: (state: Map<string, IFormFieldState>) => void) => React.FormEventHandler<HTMLFormElement>,
+ *   submitDisabled: () => boolean;
+ *
  * }}
  */
 export function useForm(): {
@@ -35,12 +40,21 @@ export function useForm(): {
   onSubmit: (
     handleSubmit: (state: Map<string, IFormFieldState>) => void,
   ) => React.FormEventHandler<HTMLFormElement>;
+  submitDisabled: () => boolean;
 } {
   // Ссылка для хранения состояния полей формы
   const fieldsState = React.useRef(new Map<string, IFormFieldState>());
 
   // Состояние для отслеживания ошибок валидации
   const [error, setError] = React.useState<Record<string, boolean>>({});
+
+  const submitDisabled = React.useCallback(() => {
+    let hasError = false;
+    fieldsState.current.forEach(({ state, validateHandler }) => {
+      hasError = validateHandler(state);
+    });
+    return hasError;
+  }, []);
 
   /**
    * Регистрирует поле формы и возвращает обработчики событий onChange и onBlur.
@@ -72,9 +86,17 @@ export function useForm(): {
         fieldsState.current.set(fieldName, {
           state: value,
           error: newError,
+          validateHandler,
         });
         return newError;
       };
+      if (!fieldsState.current.has(fieldName)) {
+        fieldsState.current.set(fieldName, {
+          state: '',
+          error: false,
+          validateHandler,
+        });
+      }
 
       /**
        * Обрабатывает событие onChange элемента ввода.
@@ -122,5 +144,5 @@ export function useForm(): {
     [],
   );
 
-  return { register, onSubmit };
+  return { register, onSubmit, submitDisabled };
 }

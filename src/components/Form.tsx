@@ -4,7 +4,7 @@ import Input from './Input/Input';
 import Button from './Button/Button';
 
 const Form: React.FC = () => {
-  const { register, onSubmit } = useForm();
+  const { register, onSubmit, submitDisabled } = useForm();
   return (
     <form
       onSubmit={onSubmit((fieldState) => {
@@ -58,7 +58,7 @@ const Form: React.FC = () => {
           autoComplete='cc-name'
           style={{ gridColumn: '1/4' }}
         />
-        <Button type='submit' style={{ gridColumn: '1/4' }}>
+        <Button type='submit' style={{ gridColumn: '1/4' }} disabled={submitDisabled()}>
           Отправить
         </Button>
       </div>
