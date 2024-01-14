@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from '../Hooks';
 import Input from './Input/Input';
 import Button from './Button/Button';
-import { maxLength, required, wordsCount } from './validators/validators';
+import { maxLength, required, wordsCount } from '../validators/validators';
 
 /**
  * Представляет состояние поля формы.

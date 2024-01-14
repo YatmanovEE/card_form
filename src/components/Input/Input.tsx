@@ -51,7 +51,6 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   error: Record<string, boolean>;
   fieldName: string;
   label: string;
-  hideValue?: boolean;
   formatter?: Formatter | undefined;
   textAlign?: React.CSSProperties['textAlign'];
 }
@@ -63,7 +62,6 @@ const Input: React.FC<Props> = ({
   formatter,
   inputMode,
   style,
-  hideValue,
   textAlign,
   ...props
 }) => {
@@ -73,24 +71,10 @@ const Input: React.FC<Props> = ({
     props?.value ?? '',
   );
 
-  const changeFormatValue = (
-    setStateAction: React.SetStateAction<string | number | readonly string[]>,
-  ) => {
-    if (hideValue) {
-      return setFormatValue((prev) => {
-        let newValue = setStateAction;
-        if (typeof setStateAction === 'function') {
-          newValue = setStateAction(prev);
-        }
-        return newValue.toString().replaceAll(/./g, '*');
-      });
-    }
-    return setFormatValue(setStateAction);
-  };
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const inputValue = e.target.value;
     if (inputMode === 'numeric' && inputValue.toLowerCase() !== inputValue.toUpperCase()) {
-      changeFormatValue((prev) => {
+      setFormatValue((prev) => {
         if (prev) {
           return prev;
         }
@@ -99,8 +83,8 @@ const Input: React.FC<Props> = ({
       return;
     }
 
-    changeFormatValue(formattingValue(inputValue, formatter));
-    if (formatter.unformatted) {
+    setFormatValue(formattingValue(inputValue, formatter));
+    if (formatter?.unformatted) {
       props.onChange({
         ...e,
         target: {
@@ -121,7 +105,6 @@ const Input: React.FC<Props> = ({
         value={formatValue}
         className={`${classes.input} ${hasError ? classes.invalid : classes.valid}`}
         placeholder={props.placeholder ?? ' '}
-        type={props.type === 'password' ? 'text' : props.type}
         style={{ textAlign }}
       />
       <span className={classes.inputBorder} />
