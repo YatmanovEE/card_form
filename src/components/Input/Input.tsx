@@ -5,12 +5,14 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   error: Record<string, boolean>;
   fieldName: string;
   label: string;
+  hideValue?: boolean;
   formatter?:
     | {
         patternChar: string;
         format: string;
       }
     | undefined;
+  textAlign?: React.CSSProperties['textAlign'];
 }
 
 const Input: React.FC<Props> = ({
@@ -20,6 +22,8 @@ const Input: React.FC<Props> = ({
   formatter,
   inputMode,
   style,
+  hideValue,
+  textAlign,
   ...props
 }) => {
   const id = useId();
@@ -27,10 +31,25 @@ const Input: React.FC<Props> = ({
   const [formatValue, setFormatValue] = React.useState<string | number | readonly string[]>(
     props?.value ?? '',
   );
+
+  const changeFormatValue = (
+    setStateAction: React.SetStateAction<string | number | readonly string[]>,
+  ) => {
+    if (hideValue) {
+      return setFormatValue((prev) => {
+        let newValue = setStateAction;
+        if (typeof setStateAction === 'function') {
+          newValue = setStateAction(prev);
+        }
+        return newValue.toString().replaceAll(/./g, '*');
+      });
+    }
+    return setFormatValue(setStateAction);
+  };
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const inputValue = e.target.value;
     if (inputMode === 'numeric' && inputValue.toLowerCase() !== inputValue.toUpperCase()) {
-      setFormatValue((prev) => {
+      changeFormatValue((prev) => {
         if (prev) {
           return prev;
         }
@@ -54,9 +73,9 @@ const Input: React.FC<Props> = ({
           }
         }
       }
-      setFormatValue(formattedValue);
+      changeFormatValue(formattedValue);
     } else {
-      setFormatValue(inputValue);
+      changeFormatValue(inputValue);
     }
     props.onChange(e);
   };
@@ -69,6 +88,8 @@ const Input: React.FC<Props> = ({
         value={formatValue}
         className={`${classes.input} ${hasError ? classes.invalid : classes.valid}`}
         placeholder={props.placeholder ?? ' '}
+        type={props.type === 'password' ? 'text' : props.type}
+        style={{ textAlign }}
       />
       <span className={classes.inputBorder} />
       <label htmlFor={id} className={classes.label}>

@@ -29,7 +29,7 @@ const Form: React.FC<IFormProps> = ({ onSubmit: submitHandler }) => {
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(3, 1fr)',
-          maxWidth: 352,
+          gridRowGap: '50px',
         }}
       >
         <Input
@@ -53,6 +53,7 @@ const Form: React.FC<IFormProps> = ({ onSubmit: submitHandler }) => {
           inputMode='numeric'
           autoComplete='cc-exp'
           style={{ gridColumn: '1/2' }}
+          textAlign='center'
         />
         <Input
           {...register('cvc', [required])}
@@ -61,6 +62,8 @@ const Form: React.FC<IFormProps> = ({ onSubmit: submitHandler }) => {
           inputMode='numeric'
           autoComplete='cc-csc'
           maxLength={3}
+          hideValue
+          textAlign='center'
           style={{ gridColumn: '3/4' }}
         />
         <Input
