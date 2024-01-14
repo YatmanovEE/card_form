@@ -77,10 +77,10 @@ export function useForm(): {
         let newError = false;
         validateArray.some((validate) => {
           const result = validate(value);
-          if (result) {
+          if (!result) {
+            newError = true;
             return true;
           }
-          newError = true;
           return false;
         });
         fieldsState.current.set(fieldName, {
