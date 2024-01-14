@@ -63,7 +63,6 @@ const Form: React.FC<IFormProps> = ({ onSubmit: submitHandler }) => {
           inputMode='numeric'
           autoComplete='cc-csc'
           maxLength={3}
-          hideValue
           textAlign='center'
           style={{ gridColumn: '3/4' }}
         />
