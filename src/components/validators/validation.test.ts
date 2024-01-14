@@ -1,4 +1,4 @@
-import { intervalLength, required, maxLength } from './validators';
+import { intervalLength, required, maxLength, wordsCount } from './validators';
 
 describe('Проверка интервальной длинны', () => {
   const intervalTest = intervalLength(1, 10);
@@ -38,5 +38,18 @@ describe('Проверка обязательности заполнения', (
   });
   test('Значение отсутствует', () => {
     expect(required('')).toBe(false);
+  });
+});
+
+describe('Проверка на количество слов', () => {
+  const wordsCountText = wordsCount(2);
+  test('Необходимое количество слов', () => {
+    expect(wordsCountText('Test Test')).toBe(true);
+  });
+  test('Количество слов меньше', () => {
+    expect(wordsCountText('test')).toBe(false);
+  });
+  test('Количество слов больше', () => {
+    expect(wordsCountText('test test test')).toBe(false);
   });
 });

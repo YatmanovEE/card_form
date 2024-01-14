@@ -16,6 +16,13 @@ export const maxLength =
     return true;
   };
 
+export const wordsCount =
+  (length: number): IValidator =>
+  (value) => {
+    if (value.split(' ').length === length) return true;
+    return false;
+  };
+
 export const intervalLength =
   (min: number, max: number): IValidator =>
   (value) => {
