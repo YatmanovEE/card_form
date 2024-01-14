@@ -16,7 +16,7 @@ const formattingValue = (value: string, formatter?: Formatter): string => {
   for (let i = 0; i < format.length; i += 1) {
     const charFormat = format[i];
     const charInputValue = value?.[i];
-    if (charInputValue !== undefined) {
+    if (charInputValue !== undefined && charFormat !== undefined) {
       if (charFormat === patternChar) {
         formattedValue = formattedValue.concat(charInputValue);
       } else if (charFormat !== charInputValue) {
@@ -82,19 +82,18 @@ const Input: React.FC<Props> = ({
       });
       return;
     }
+    const formattedValue = formattingValue(inputValue, formatter);
 
-    setFormatValue(formattingValue(inputValue, formatter));
-    if (formatter?.unformatted) {
-      props.onChange({
-        ...e,
-        target: {
-          ...e.target,
-          value: unFormattingValue(e.target.value, formatter),
-        },
-      });
-    } else {
-      props.onChange(e);
-    }
+    setFormatValue(formattedValue);
+    props.onChange({
+      ...e,
+      target: {
+        ...e.target,
+        value: formatter?.unformatted
+          ? unFormattingValue(formattedValue, formatter)
+          : formattingValue(inputValue, formatter),
+      },
+    });
   };
   return (
     <div className={classes.root} style={style}>
