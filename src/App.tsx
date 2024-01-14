@@ -1,5 +1,5 @@
 import React from 'react';
-import PayStepper from './PayStepper/PayStepper';
+import PayStepper from './pages/PayStepper';
 
 export default function App() {
   return (

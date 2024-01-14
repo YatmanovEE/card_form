@@ -101,7 +101,7 @@ export default (options: EnvVariables) => {
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],
       alias: {
-        '@': path.resolve(__dirname, 'src'),
+        src: path.resolve(__dirname, 'src'),
       },
     },
     output: {

@@ -1,8 +1,8 @@
 import React from 'react';
-import Form from '../Form';
-import Close from '@/assets/Close.svg';
-import Check from '@/assets/Check.svg';
-import Stepper from './Stepper';
+import Close from 'src/assets/Close.svg';
+import Check from 'src/assets/Check.svg';
+import Form from '../components/Form';
+import Stepper from '../components/Stepper/Stepper';
 
 const PayStepper: React.FC = () => {
   const [position, setPosition] = React.useState<'form' | 'loader' | 'valid' | 'error'>('form');
