@@ -4,6 +4,7 @@ import classes from './Input.module.scss';
 interface Formatter {
   patternChar: string;
   format: string;
+  unformatted?: boolean;
 }
 
 const formattingValue = (value: string, formatter?: Formatter): string => {
@@ -99,14 +100,17 @@ const Input: React.FC<Props> = ({
     }
 
     changeFormatValue(formattingValue(inputValue, formatter));
-
-    props.onChange({
-      ...e,
-      target: {
-        ...e.target,
-        value: unFormattingValue(e.target.value, formatter),
-      },
-    });
+    if (formatter.unformatted) {
+      props.onChange({
+        ...e,
+        target: {
+          ...e.target,
+          value: unFormattingValue(e.target.value, formatter),
+        },
+      });
+    } else {
+      props.onChange(e);
+    }
   };
   return (
     <div className={classes.root} style={style}>

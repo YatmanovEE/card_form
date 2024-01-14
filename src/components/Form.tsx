@@ -38,6 +38,7 @@ const Form: React.FC<IFormProps> = ({ onSubmit: submitHandler }) => {
           formatter={{
             format: '#### #### #### ####',
             patternChar: '#',
+            unformatted: true,
           }}
           inputMode='numeric'
           autoComplete='cc-number'
