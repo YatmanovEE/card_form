@@ -1,4 +1,4 @@
-type IValidator = (val: string) => boolean;
+import { IValidator } from '../components/Common';
 
 export const required: IValidator = (value) => {
   if (!value) {

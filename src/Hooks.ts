@@ -1,17 +1,5 @@
 import React, { FormEvent, ChangeEventHandler } from 'react';
-
-/**
- * Представляет функцию валидации для поля формы.
- */
-export type IValidator = (value: string) => boolean;
-/**
- * Представляет состояние поля формы.
- */
-type IFormFieldState = {
-  state: string;
-  error: boolean;
-  validateHandler: (value: string) => boolean;
-};
+import { IValidator, IFormFieldState } from './components/Common';
 
 /**
  * Пользовательский хук React для управления состоянием формы и валидацией.

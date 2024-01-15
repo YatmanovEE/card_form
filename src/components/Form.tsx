@@ -3,15 +3,7 @@ import { useForm } from '../Hooks';
 import Input from './Input/Input';
 import Button from './Button/Button';
 import { maxLength, required, wordsCount } from '../validators/validators';
-
-/**
- * Представляет состояние поля формы.
- */
-type IFormFieldState = {
-  state: string;
-  error: boolean;
-  validateHandler: (value: string) => boolean;
-};
+import { IFormFieldState } from './Common';
 
 type IFormProps = {
   onSubmit: (value: Map<string, IFormFieldState>) => void;
