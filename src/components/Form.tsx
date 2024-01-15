@@ -2,7 +2,13 @@ import React from 'react';
 import { useForm } from '../Hooks';
 import Input from './Input/Input';
 import Button from './Button/Button';
-import { maxLength, required, wordsCount } from '../validators/validators';
+import {
+  intervalLength,
+  maxLength,
+  required,
+  validDate,
+  wordsCount,
+} from '../validators/validators';
 import { IFormFieldState } from './Common';
 
 type IFormProps = {
@@ -25,10 +31,10 @@ const Form: React.FC<IFormProps> = ({ onSubmit: submitHandler }) => {
         }}
       >
         <Input
-          {...register('pan', [required])}
+          {...register('pan', [required, intervalLength(13, 19)])}
           label='Номер карты'
           formatter={{
-            format: '#### #### #### ####',
+            format: '#### #### #### #### ###',
             patternChar: '#',
             unformatted: true,
           }}
@@ -37,7 +43,7 @@ const Form: React.FC<IFormProps> = ({ onSubmit: submitHandler }) => {
           style={{ gridColumn: '1/4' }}
         />
         <Input
-          {...register('expire', [required])}
+          {...register('expire', [required, validDate])}
           label='Месяц/Год'
           formatter={{
             format: '##/##',
