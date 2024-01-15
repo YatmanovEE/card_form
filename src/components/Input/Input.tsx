@@ -105,6 +105,7 @@ const Input: React.FC<Props> = ({
         className={`${classes.input} ${hasError ? classes.invalid : classes.valid}`}
         placeholder={props.placeholder ?? ' '}
         style={{ textAlign }}
+        data-testid='input'
       />
       <span className={classes.inputBorder} />
       <label htmlFor={id} className={classes.label}>
