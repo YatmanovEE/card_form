@@ -6,11 +6,15 @@
     "author": "Yatmanov Evgeniy <nokiabagpipes@gmail.com>",
     "license": "MIT",
     "scripts": {
-        "start": "yarn workspaces foreach --from . -R run start"
+        "client": "yarn workspace client start",
+        "server": "yarn workspace server start",
+        "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\""
     },
     "workspaces": [
-        "server/*",
-        "client/*"
+        "packages/*"
     ],
-    "packageManager": "yarn@4.0.2"
+    "packageManager": "yarn@4.0.2",
+    "dependencies": {
+        "concurrently": "^8.2.2"
+    }
 }

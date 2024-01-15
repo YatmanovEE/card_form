@@ -1,11 +1,11 @@
 {
-  "name": "@card_form/client",
+  "name": "client",
   "version": "1.0.0",
   "main": "index.js",
   "author": "Yatmanov Evgeniy <nokiabagpipes@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "webpack serve --env mode=development",
+    "dev": "webpack serve --env mode=development",
     "build": "webpack --env mode=production",
     "test": "jest"
   },
