@@ -1,4 +1,4 @@
-import { intervalLength, required, maxLength, wordsCount, validDate } from './validators';
+import { intervalLength, required, maxLength, wordsCount, validDate, stringOnly } from './validators';
 
 describe('Проверка интервальной длинны', () => {
   const intervalTest = intervalLength(1, 10);
@@ -79,4 +79,15 @@ describe('Проверка даты', () => {
     const invalidSeparatorDateString = '06-23';
     expect(validDate(invalidSeparatorDateString)).toBe(false);
   });
+
+  describe('Проверка только буквы', () => {
+    it('Некорректным формат', () => {
+      const invalidFormatDateString = '0623';
+      expect(stringOnly(invalidFormatDateString)).toBe(false);
+    });
+    it('Корректный формат', () => {
+      const invalidFormatDateString = 'abcd';
+      expect(stringOnly(invalidFormatDateString)).toBe(true);
+    });
+  })
 });

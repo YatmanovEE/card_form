@@ -6,6 +6,7 @@ import {
   intervalLength,
   maxLength,
   required,
+  stringOnly,
   validDate,
   wordsCount,
 } from '../validators/validators';
@@ -65,7 +66,7 @@ const Form: React.FC<IFormProps> = ({ onSubmit: submitHandler }) => {
           style={{ gridColumn: '3/4' }}
         />
         <Input
-          {...register('cardholder', [required, wordsCount(2)])}
+          {...register('cardholder', [required, wordsCount(2), stringOnly])}
           label='Владелец карты'
           autoComplete='cc-name'
           style={{ gridColumn: '1/4' }}

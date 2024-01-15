@@ -46,3 +46,11 @@ export const validDate: IValidator = (value) => {
   // Проверка, что месяц находится в диапазоне от 1 до 12, а год в диапазоне от 21 до 26
   return month >= 1 && month <= 12 && year >= 21 && year <= 26;
 };
+
+
+/**
+ * Валидатор для проверки значений, только числа.
+ */
+export const stringOnly: IValidator = (value) => {
+  return value.replace(/[0-9]/, '').length === value.length
+}
