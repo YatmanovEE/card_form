@@ -39,7 +39,9 @@ export function useForm(): {
   const submitDisabled = React.useCallback(() => {
     let hasError = false;
     fieldsState.current.forEach(({ state, validateHandler }) => {
-      hasError = validateHandler(state);
+      if(validateHandler(state)) {
+        hasError = true
+      }
     });
     return hasError;
   }, []);
