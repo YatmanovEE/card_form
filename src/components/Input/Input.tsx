@@ -1,51 +1,6 @@
 import React, { useId } from 'react';
 import classes from './Input.module.scss';
-
-interface Formatter {
-  patternChar: string;
-  format: string;
-  unformatted?: boolean;
-}
-
-const formattingValue = (value: string, formatter?: Formatter): string => {
-  if (!formatter) {
-    return value;
-  }
-  let formattedValue = '';
-  const { format, patternChar } = formatter;
-  for (let i = 0; i < format.length; i += 1) {
-    const charFormat = format[i];
-    const charInputValue = value?.[i];
-    if (charInputValue !== undefined && charFormat !== undefined) {
-      if (charFormat === patternChar) {
-        formattedValue = formattedValue.concat(charInputValue);
-      } else if (charFormat !== charInputValue) {
-        formattedValue = formattedValue.concat(charFormat).concat(charInputValue);
-      } else {
-        formattedValue = formattedValue.concat(charFormat);
-      }
-    }
-  }
-  return formattedValue;
-};
-
-const unFormattingValue = (value: string, formatter?: Formatter): string => {
-  if (!formatter) {
-    return value;
-  }
-  const { format, patternChar } = formatter;
-  let unFormattedValue = '';
-  for (let i = 0; i < format.length; i += 1) {
-    const charFormat = format[i];
-    const charValue = value?.[i];
-    if (charValue !== undefined) {
-      if (charFormat === patternChar) {
-        unFormattedValue = unFormattedValue.concat(charValue);
-      }
-    }
-  }
-  return unFormattedValue;
-};
+import { Formatter, formattingValue, unFormattingValue } from './Common';
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   error: Record<string, boolean>;
@@ -71,6 +26,21 @@ const Input: React.FC<Props> = ({
     props?.value ?? '',
   );
 
+  const antiPattern: string[] = React.useMemo(() => {
+    if (formatter) {
+      const { format, patternChar } = formatter;
+      const newAntiPattern: string[] = [];
+      for (let i = 0; i < format.length; i += 1) {
+        const char = format[i];
+        if (char !== patternChar) {
+          newAntiPattern.push(char);
+        }
+      }
+      return newAntiPattern;
+    }
+    return [];
+  }, [formatter]);
+
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const inputValue = e.target.value;
     if (inputMode === 'numeric' && inputValue.toLowerCase() !== inputValue.toUpperCase()) {
@@ -82,7 +52,7 @@ const Input: React.FC<Props> = ({
       });
       return;
     }
-    const formattedValue = formattingValue(inputValue, formatter);
+    const formattedValue = formattingValue(inputValue, formatter, antiPattern);
 
     setFormatValue(formattedValue);
     props.onChange({
@@ -91,7 +61,7 @@ const Input: React.FC<Props> = ({
         ...e.target,
         value: formatter?.unformatted
           ? unFormattingValue(formattedValue, formatter)
-          : formattingValue(inputValue, formatter),
+          : formattedValue,
       },
     });
   };

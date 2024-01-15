@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import Input from './Input';
 import '@testing-library/jest-dom';
 
@@ -35,10 +34,28 @@ describe('Компонент Input', () => {
     const inputElement = getByTestId('input');
     fireEvent.change(inputElement, { target: { value: '12345678' } });
 
+    expect(inputElement).toHaveValue('1234-5678');
+
+  });
+  it('Обработка значений отправляемых без форматирования', () => {
+    const handleChangeMock = jest.fn();
+    const { getByTestId } = render(
+      <Input
+        error={{}}
+        fieldName='testField'
+        label='Test Label'
+        formatter={{ patternChar: '#', format: '##/##', unformatted: true }}
+        onChange={handleChangeMock}
+      />,
+    );
+
+    const inputElement = getByTestId('input');
+    fireEvent.change(inputElement, { target: { value: '12345' } });
+
     expect(handleChangeMock).toHaveBeenCalledWith(
       expect.objectContaining({
         target: expect.objectContaining({
-          value: '1234-5678', // formatted value
+          value: '1234',
         }),
       }),
     );
