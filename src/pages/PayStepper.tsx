@@ -1,25 +1,37 @@
 import React from 'react';
-import Close from 'src/assets/Close.svg';
-import Check from 'src/assets/Check.svg';
+import CloseIcon from 'src/assets/Close.svg';
+import CheckIcon from 'src/assets/Check.svg';
 import { v4 as uuidv4 } from 'uuid';
 import Form from '../components/Form';
 import Stepper from '../components/Stepper/Stepper';
 
-export interface MethodPay {
+/**
+ * Интерфейс для ответа от метода pay.
+ */
+interface MethodPay {
   jsonrpc: string;
   id: string;
   result: Result;
 }
 
-export interface Result {
+/**
+ * Интерфейс для результата в ответе метода pay.
+ */
+interface Result {
   pid: string;
 }
 
-export interface Check {
+/**
+ * Интерфейс для объекта проверки статуса платежа.
+ */
+interface Check {
   status: 'process' | 'ok' | 'fail';
   pid: string;
 }
 
+/**
+ * Компонент PayStepper представляет процесс оплаты с использованием нескольких шагов (Stepper).
+ */
 const PayStepper: React.FC = () => {
   const [position, setPosition] = React.useState<'form' | 'loader' | 'valid' | 'error'>('form');
   const [pid, setPid] = React.useState('');
@@ -60,14 +72,14 @@ const PayStepper: React.FC = () => {
   if (position === 'valid') {
     return (
       <Stepper title='Оплата прошла успешно'>
-        <Check width={47} height={47} color='#08D60E' />
+        <CheckIcon width={47} height={47} color='#08D60E' />
       </Stepper>
     );
   }
   if (position === 'error') {
     return (
       <Stepper title='Произошла ошибка'>
-        <Close width={47} height={47} color='#F44336' />
+        <CloseIcon width={47} height={47} color='#F44336' />
       </Stepper>
     );
   }
@@ -77,6 +89,7 @@ const PayStepper: React.FC = () => {
       <Form
         onSubmit={(fieldState) => {
           const fieldStateEntries = fieldState[Symbol.iterator]();
+          setPosition('loader');
           const postData = {
             jsonrpc: '2.0',
             id: uuidv4(),
@@ -99,9 +112,8 @@ const PayStepper: React.FC = () => {
             body: JSON.stringify({ ...postData, params }),
           })
             .then((response) => response.json() as Promise<MethodPay>)
-            .then(({ result: { pid } }) => {
-              setPosition('loader');
-              setPid(pid);
+            .then(({ result: { pid: resultPid } }) => {
+              setPid(resultPid);
             })
             .catch(() => {
               setPosition('error');
