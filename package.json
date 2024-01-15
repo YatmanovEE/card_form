@@ -6,7 +6,7 @@
     "author": "Yatmanov Evgeniy <nokiabagpipes@gmail.com>",
     "license": "MIT",
     "scripts": {
-        "start": "yarn workspaces foreach -pi run start"
+        "start": "yarn workspaces foreach --from . -R run start"
     },
     "workspaces": [
         "server/*",
