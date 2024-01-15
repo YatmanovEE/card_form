@@ -5,6 +5,10 @@
     "repository": "https://github.com/YatmanovEE/card_form.git",
     "author": "Yatmanov Evgeniy <nokiabagpipes@gmail.com>",
     "license": "MIT",
+    "private": true,
+    "engines": {
+        "node": "^=20.10.0"
+    },
     "scripts": {
         "client": "yarn workspace client dev",
         "server": "yarn workspace server dev",
@@ -13,7 +17,6 @@
     "workspaces": [
         "packages/*"
     ],
-    "packageManager": "yarn@4.0.2",
     "dependencies": {
         "concurrently": "^8.2.2"
     }

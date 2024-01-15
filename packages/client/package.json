@@ -9,6 +9,7 @@
     "build": "webpack --env mode=production",
     "test": "jest"
   },
+  "private": true,
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@svgr/webpack": "^8.1.0",
@@ -52,7 +53,6 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
   },
-  "packageManager": "yarn@4.0.2",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
