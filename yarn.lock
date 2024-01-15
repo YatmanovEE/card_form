@@ -10190,7 +10190,7 @@ __metadata:
     jayson: "npm:^3.4.4"
     jsonwebtoken: "npm:^8.5.1"
     nodemon: "npm:^2.0.7"
-    uuid: "npm:^8.3.2"
+    uuid: "npm:^9.0.1"
   languageName: unknown
   linkType: soft
 

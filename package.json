@@ -6,9 +6,9 @@
     "author": "Yatmanov Evgeniy <nokiabagpipes@gmail.com>",
     "license": "MIT",
     "scripts": {
-        "client": "yarn workspace client start",
-        "server": "yarn workspace server start",
-        "start": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\""
+        "client": "yarn workspace client dev",
+        "server": "yarn workspace server dev",
+        "dev": "concurrently --kill-others-on-fail \"yarn server\"  \"yarn client\""
     },
     "workspaces": [
         "packages/*"
